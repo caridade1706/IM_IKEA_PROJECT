@@ -1,0 +1,31 @@
+version: "3.1"
+
+nlu:
+  - intent: ask_help
+    examples: |
+      - Podes-me ajudar?
+      - Preciso de ajuda
+      - Como faço isso?
+      - Não sei como fazer isso
+      - Tens alguma sugestão?
+
+  - intent: show_products
+    examples: |
+      - Quero ver [cadeiras](category)
+      - Mostre [mesas](category)
+      - Exiba [sofas](category)
+      - Preciso de [cadeiras](category)
+      - Tem [mesas](category) disponíveis?
+      - Procuro por [sofas](category)
+      - Procura por [sofas](category)
+  
+lookup: category
+examples: |
+  - cadeiras
+  - mesas
+  - sofas
+  - armarios
+  - camas
+  - cozinhas
+  - prateleiras
+  - estantes

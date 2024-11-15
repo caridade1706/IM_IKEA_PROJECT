@@ -1,0 +1,23 @@
+version: "3.1"
+
+stories:
+  - story: Mostrar cadeiras
+    steps:
+      - intent: show_products
+        entities:
+          - category: "cadeiras"
+      - action: action_show_products
+
+  - story: Mostrar mesas
+    steps:
+      - intent: show_products
+        entities:
+          - category: "mesas"
+      - action: action_show_products
+
+  - story: Categoria não encontrada
+    steps:
+      - intent: show_products
+        entities:
+          - category: "inexistente"
+      - action: action_show_products

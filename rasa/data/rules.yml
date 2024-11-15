@@ -1,0 +1,13 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+    - intent: goodbye
+    - action: utter_goodbye
+
+- rule: Mostrar produtos
+  steps:
+    - intent: show_products
+    - action: action_show_products

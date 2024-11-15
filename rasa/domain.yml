@@ -1,0 +1,38 @@
+version: "3.1"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+intents:
+  - greet
+  - goodbye
+  - show_products
+  - ask_help
+
+entities:
+  - category
+
+slots:
+  category:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: category
+
+responses:
+  utter_greet:
+    - text: "Olá! Como posso ajudá-lo hoje?"
+
+  utter_goodbye:
+    - text: "Até logo! Volte sempre."
+
+  utter_ask_help:
+    - text: "Claro! O que você precisa?"
+
+  utter_iamabot:
+    - text: "Eu sou um assistente virtual, como posso ajudar?"
+
+actions:
+  - action_show_products
