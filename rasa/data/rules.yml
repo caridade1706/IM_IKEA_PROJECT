@@ -2,12 +2,36 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
+- rule: Dizer adeus sempre que o usuário disser goodbye
   steps:
     - intent: goodbye
     - action: utter_goodbye
 
-- rule: Mostrar produtos
+- rule: Responder a uma saudação
+  steps:
+    - intent: greet
+    - action: utter_greet
+
+- rule: Mostrar produtos válidos
   steps:
     - intent: show_products
+    - slot_was_set:
+        - category: "cadeiras"  # Exemplo de uma categoria válida
     - action: action_show_products
+
+- rule: Categoria não encontrada
+  steps:
+    - intent: show_products
+    - slot_was_set:
+        - category: null  # Categoria não reconhecida
+    - action: action_handle_unknown_category
+
+- rule: Oferecer ajuda
+  steps:
+    - intent: ask_help
+    - action: utter_ask_help
+
+- rule: Fallback padrão
+  steps:
+    - intent: nlu_fallback
+    - action: utter_default

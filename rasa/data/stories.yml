@@ -1,23 +1,16 @@
 version: "3.1"
 
 stories:
-  - story: Mostrar cadeiras
+  - story: Mostrar produtos por categoria
     steps:
       - intent: show_products
-        entities:
-          - category: "cadeiras"
-      - action: action_show_products
-
-  - story: Mostrar mesas
-    steps:
-      - intent: show_products
-        entities:
-          - category: "mesas"
+      - slot_was_set:
+          - category: "cadeiras"  # Exemplo para uma categoria válida
       - action: action_show_products
 
   - story: Categoria não encontrada
     steps:
       - intent: show_products
-        entities:
-          - category: "inexistente"
-      - action: action_show_products
+      - slot_was_set:
+          - category: null
+      - action: action_handle_unknown_category

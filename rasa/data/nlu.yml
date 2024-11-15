@@ -13,19 +13,58 @@ nlu:
     examples: |
       - Quero ver [cadeiras](category)
       - Mostre [mesas](category)
-      - Exiba [sofas](category)
+      - Exiba [sofás](category)
       - Preciso de [cadeiras](category)
       - Tem [mesas](category) disponíveis?
-      - Procuro por [sofas](category)
-      - Procura por [sofas](category)
+      - Procuro por [sofás](category)
+      - Procura por [sofás](category)
+      - Pode mostrar-me as [cadeiras](category) disponíveis, por favor?
+      - Gostava de saber se têm [mesas](category) em stock.
+      - Por favor, mostre-me os [sofás](category) que têm disponíveis.
+      - Pode verificar se há [cadeiras](category) em stock, por favor?
+      - Queria ver os modelos de [mesas](category) disponíveis para compra.
+      - Procuro [sofás](category), pode mostrar-me o que têm, por favor?
+      - Tem [cadeiras](category) que possam ser entregues rapidamente?
+      - Estou interessado em ver as [mesas](category) disponíveis, pode ajudar-me?
+      - Preciso de saber se têm [sofás](category) em stock no momento.
+      - Por gentileza, exiba os produtos da categoria [cadeiras](category).
+      - Pode confirmar se há [mesas](category) disponíveis para entrega?
+      - Queria ver todos os [sofás](category) que estão disponíveis para venda.
+      - Gostava de verificar o stock de [cadeiras](category), pode ajudar-me?
+      - Por favor, mostre-me os produtos de [mesas](category) que estão em stock.
+      - Preciso de ver as opções de [sofás](category), pode mostrar-me?
+      - Pode exibir os modelos de [cadeiras](category) que têm atualmente, por favor?
+      - Gostava de saber quais [mesas](category) estão disponíveis.
+      - Tem como verificar se há [sofás](category) disponíveis no momento?
+      - Quero ver os modelos de [prateleiras](category) disponíveis.
+      - Pode ajudar-me a encontrar [secretárias](category) para escritório, por favor?
+      - Gostava de saber se têm [poltronas](category) disponíveis.
+      - Estou interessado em ver as opções de [bancos altos](category) que têm em stock.
+      - Preciso de verificar se há [móveis de TV](category) disponíveis para entrega.
+      - Queria explorar os produtos de [camas](category) que têm disponíveis.
+      - Por gentileza, mostre-me as [estantes](category) que posso adquirir.
+      - Tem [armários](category) para compra imediata?
+      - Gostava de ver as opções de [aparadores](category) no catálogo.
+      - Pode mostrar-me se há [móveis de entrada](category) disponíveis no momento?
+      - Preciso de saber se há [cómodas](category) em stock.
+      - Tem como verificar as [mesas de cabeceira](category) disponíveis?
+
+
   
 lookup: category
 examples: |
   - cadeiras
   - mesas
-  - sofas
-  - armarios
+  - sofás
+  - poltronas
+  - secretárias
+  - bancos altos
+  - aparadores
+  - móveis de entrada
+  - móveis de TV
+  - mesas de centro
   - camas
-  - cozinhas
-  - prateleiras
+  - roupeiros
   - estantes
+  - prateleiras
+  - armários

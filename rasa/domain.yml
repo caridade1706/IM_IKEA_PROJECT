@@ -9,6 +9,7 @@ intents:
   - goodbye
   - show_products
   - ask_help
+  - nlu_fallback
 
 entities:
   - category
@@ -24,15 +25,33 @@ slots:
 responses:
   utter_greet:
     - text: "Olá! Como posso ajudá-lo hoje?"
+    - text: "Bem-vindo! Diga-me como posso ajudar."
+    - text: "Oi! Precisa de ajuda com alguma coisa?"
 
   utter_goodbye:
     - text: "Até logo! Volte sempre."
+    - text: "Adeus! Espero vê-lo em breve."
+    - text: "Tchau! Se precisar de ajuda, estarei por aqui."
 
   utter_ask_help:
     - text: "Claro! O que você precisa?"
+    - text: "Estou aqui para ajudar! Diga-me o que precisa."
+    - text: "Sim, com certeza. Como posso ajudar?"
 
   utter_iamabot:
     - text: "Eu sou um assistente virtual, como posso ajudar?"
 
+  utter_default:
+    - text: "Desculpe, não percebi. Pode repetir de outra forma?"
+
+  utter_default_products:
+    - text: "Ainda não encontrei produtos para essa categoria. Quer tentar outra?"
+
 actions:
   - action_show_products
+  - action_handle_unknown_category
+
+forms:
+  product_form:
+    required_slots:
+      - category
