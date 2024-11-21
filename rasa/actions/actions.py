@@ -39,6 +39,9 @@ class ActionShowProducts(Action):
             return []
 
         try:
+            
+            print("A iniciar pedido:")
+            
             # Conexão com a API do IKEA
             conn = http.client.HTTPSConnection("ikea-api.p.rapidapi.com")
 
@@ -84,3 +87,20 @@ class ActionShowProducts(Action):
             print(f"Erro na integração com a API do IKEA: {e}")
 
         return []
+
+
+class ActionHandleUnknownCategory(Action):
+    def name(self):
+        return "action_handle_unknown_category"
+    
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: dict):
+
+        category = tracker.get_slot("category")
+        
+        if not category:
+            dispatcher.utter_message(text="Não consegui entender a categoria que você quer buscar.")
+            return []
+
+

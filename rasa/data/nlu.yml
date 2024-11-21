@@ -12,8 +12,8 @@ nlu:
   - intent: show_products
     examples: |
       - Quero ver [cadeiras](category)
-      - Mostre [mesas](category)
-      - Exiba [sofás](category)
+      - Mostra-me [mesas](category)
+      - Exibe [sofás](category)
       - Preciso de [cadeiras](category)
       - Tem [mesas](category) disponíveis?
       - Procuro por [sofás](category)
@@ -27,7 +27,7 @@ nlu:
       - Tem [cadeiras](category) que possam ser entregues rapidamente?
       - Estou interessado em ver as [mesas](category) disponíveis, pode ajudar-me?
       - Preciso de saber se têm [sofás](category) em stock no momento.
-      - Por gentileza, exiba os produtos da categoria [cadeiras](category).
+      - Por favor, mostra os produtos da categoria [cadeiras](category).
       - Pode confirmar se há [mesas](category) disponíveis para entrega?
       - Queria ver todos os [sofás](category) que estão disponíveis para venda.
       - Gostava de verificar o stock de [cadeiras](category), pode ajudar-me?
@@ -42,12 +42,12 @@ nlu:
       - Estou interessado em ver as opções de [bancos altos](category) que têm em stock.
       - Preciso de verificar se há [móveis de TV](category) disponíveis para entrega.
       - Queria explorar os produtos de [camas](category) que têm disponíveis.
-      - Por gentileza, mostre-me as [estantes](category) que posso adquirir.
+      - Por favor, mostre-me as [estantes](category) que posso adquirir.
       - Tem [armários](category) para compra imediata?
       - Gostava de ver as opções de [aparadores](category) no catálogo.
       - Pode mostrar-me se há [móveis de entrada](category) disponíveis no momento?
       - Preciso de saber se há [cómodas](category) em stock.
-      - Tem como verificar as [mesas de cabeceira](category) disponíveis?
+      - Podes verificar as [mesas de cabeceira](category) disponíveis?
 
 
   

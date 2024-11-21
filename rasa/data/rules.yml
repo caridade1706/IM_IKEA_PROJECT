@@ -19,12 +19,12 @@ rules:
         - category: "cadeiras"  # Exemplo de uma categoria válida
     - action: action_show_products
 
-- rule: Categoria não encontrada
-  steps:
-    - intent: show_products
-    - slot_was_set:
-        - category: null  # Categoria não reconhecida
-    - action: action_handle_unknown_category
+# - rule: Categoria não encontrada
+#   steps:
+#     - intent: show_products
+#     - slot_was_set:
+#         - category: null  # Categoria não reconhecida
+#     - action: action_handle_unknown_category
 
 - rule: Oferecer ajuda
   steps:

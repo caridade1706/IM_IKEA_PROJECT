@@ -49,7 +49,7 @@ responses:
 
 actions:
   - action_show_products
-  - action_handle_unknown_category
+  # - action_handle_unknown_category
 
 forms:
   product_form:

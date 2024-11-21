@@ -1,125 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>IKEA Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: #fff;
+            min-height: 100vh;
+            font-family: Poppins, sans-serif;
             margin: 0;
             padding: 20px;
+            color: #4F5D73;
+        }
+        h1 {
             text-align: center;
-        }
-        #response {
-            margin-top: 20px;
+            background-color: #4F5D73;
+            color: white;
             padding: 10px;
-            border: 2px solid #4CAF50;
-            background: #fff;
-            color: #4CAF50;
-            font-size: 18px;
-            display: inline-block;
         }
-        #result {
-            margin-top: 20px;
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
             padding: 10px;
-            border: 2px solid #2196F3;
-            background: #fff;
-            color: #2196F3;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #transcript {
             font-size: 18px;
-            display: none;
+            color: #2E8B57;
+            margin-bottom: 10px;
+        }
+        #transcript-history {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            border-top: 1px solid #ccc;
+            margin-top: 10px;
+        }
+        #transcript-history li {
+            padding: 8px;
+            background: #f9f9f9;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <h1>IKEA Voice Assistant</h1>
-    <p>The assistant is listening for the wake-up word "Olá IKEA".</p>
-    <div id="response">Listening for wake-up word...</div>
-    <div id="result"></div>
+    <h1>IKEA Assistant</h1>
+    <div class="container">
+        <p id="instruction">Diga "Olá IKEA" para ativar os comandos.</p>
+        <div id="transcript">Aguardando palavra de ativação...</div>
+        <ul id="transcript-history"></ul>
+    </div>
 
     <script>
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
-        recognition.lang = 'pt-PT';
-        recognition.continuous = false; // Escuta comando por vez
-        recognition.interimResults = false;
-
         const wakeUpRecognition = new SpeechRecognition();
+        const commandRecognition = new SpeechRecognition();
         wakeUpRecognition.lang = 'pt-PT';
-        wakeUpRecognition.continuous = true; // Escuta continuamente pela wake-up word
-        wakeUpRecognition.interimResults = false;
+        commandRecognition.lang = 'pt-PT';
+        commandRecognition.continuous = true;
 
-        const wakeUpWord = "olá ikea";
-        const responseDiv = document.getElementById('response');
-        const resultDiv = document.getElementById('result');
+        const transcriptDiv = document.getElementById('transcript');
+        const transcriptHistory = document.getElementById('transcript-history');
+
         let isListeningForCommands = false;
+        const wakeUpWord = "olá ikea";
 
-        // Escutar pela wake-up word
+        // Função para iniciar o reconhecimento da palavra de ativação
         function startWakeUpRecognition() {
-            try {
-                if (!isListeningForCommands && wakeUpRecognition) {
-                    wakeUpRecognition.start();
-                    responseDiv.textContent = "Listening for wake-up word...";
-                }
-            } catch (e) {
-                console.error("Error starting wake-up recognition:", e.message);
-            }
+            wakeUpRecognition.start();
+            transcriptDiv.textContent = "Aguardando palavra de ativação...";
         }
 
+        // Quando detecta algo no wake-up recognition
         wakeUpRecognition.onresult = (event) => {
-            const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase();
-            console.log(`Heard: ${transcript}`);
+            const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+            console.log("Wake-up heard:", transcript);
 
-            if (transcript.includes(wakeUpWord) && !isListeningForCommands) {
-                responseDiv.textContent = "Activated. Listening for commands...";
+            if (transcript.includes(wakeUpWord)) {
                 isListeningForCommands = true;
-
-                // Parar a escuta da wake-up word e iniciar a escuta para comandos
+                transcriptDiv.textContent = "Ativado! Diga um comando.";
                 wakeUpRecognition.stop();
-                startListeningForCommands();
+                startCommandRecognition();
             }
         };
 
         wakeUpRecognition.onerror = (event) => {
-            console.error(`Wake-up Recognition Error: ${event.error}`);
+            console.error("Erro no wake-up recognition:", event.error);
+            startWakeUpRecognition(); // Reinicia a escuta da palavra de ativação
+        };
+
+        wakeUpRecognition.onend = () => {
             if (!isListeningForCommands) {
-                setTimeout(startWakeUpRecognition, 1000); // Reiniciar caso haja erro
+                startWakeUpRecognition(); // Continua ouvindo para a palavra de ativação
             }
         };
 
-        function startListeningForCommands() {
-            try {
-                recognition.start();
-            } catch (e) {
-                console.error("Error starting command recognition:", e.message);
-            }
-
-            recognition.onresult = async (event) => {
-                const command = event.results[event.results.length - 1][0].transcript.toLowerCase();
-                console.log(`Command: ${command}`);
-                responseDiv.textContent = "Processing command...";
-
-                await sendToBackend(command);
-
-                // Voltar para o modo de escuta da wake-up word
-                isListeningForCommands = false;
-                startWakeUpRecognition();
-            };
-
-            recognition.onerror = (event) => {
-                console.error(`Command Recognition Error: ${event.error}`);
-                responseDiv.textContent = "Error processing command. Listening for wake-up word...";
-                isListeningForCommands = false;
-                startWakeUpRecognition();
-            };
-
-            recognition.onend = () => {
-                if (isListeningForCommands) {
-                    recognition.start(); // Continuar no modo de escuta de comandos até o processamento
-                }
-            };
+        // Inicia o reconhecimento de comandos
+        function startCommandRecognition() {
+            commandRecognition.start();
+            transcriptDiv.textContent = "Estou ouvindo comandos...";
         }
+
+        // Quando detecta comandos
+        commandRecognition.onresult = async (event) => {
+            let currentTranscript = "";
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    currentTranscript = event.results[i][0].transcript.trim();
+
+                    // Exibir no histórico
+                    const li = document.createElement('li');
+                    li.textContent = "Comando: " + currentTranscript;
+                    transcriptHistory.appendChild(li);
+
+                    // Atualizar a transcrição final
+                    transcriptDiv.textContent = "Entendido: " + currentTranscript;
+
+                    // Enviar comando para o backend (IKEA)
+                    await sendToBackend(currentTranscript);
+                }
+            }
+        };
+
+        commandRecognition.onerror = (event) => {
+            console.error("Erro de reconhecimento de comandos:", event.error);
+            commandRecognition.stop();
+            startWakeUpRecognition(); // Volta a ouvir para a palavra de ativação
+        };
+
+        commandRecognition.onend = () => {
+            if (isListeningForCommands) {
+                commandRecognition.start(); // Continua ouvindo comandos
+            } else {
+                startWakeUpRecognition(); // Volta a ouvir para a palavra de ativação
+            }
+        };
 
         async function sendToBackend(command) {
             try {
@@ -137,21 +159,36 @@
                 console.log("Resposta do Rasa:", result);
 
                 if (result.length > 0) {
-                    // Mostrar resultado em uma div separada
-                    resultDiv.style.display = "block";
-                    resultDiv.textContent = result[0].text;
+                    // Adicionar resposta no histórico
+                    const li = document.createElement('li');
+                    li.textContent = "Resposta do IKEA: " + result[0].text;
+                    transcriptHistory.appendChild(li);
+
+                    // Falar a resposta do backend
+                    speak(result[0].text);
                 } else {
-                    resultDiv.style.display = "block";
-                    resultDiv.textContent = "Não recebi uma resposta do servidor.";
+                    const li = document.createElement('li');
+                    li.textContent = "Resposta do IKEA: Não entendi o comando.";
+                    transcriptHistory.appendChild(li);
+                    speak("Desculpe, não entendi o comando.");
                 }
             } catch (error) {
-                console.error("Error communicating with backend:", error);
-                resultDiv.style.display = "block";
-                resultDiv.textContent = "Erro ao processar comando.";
+                console.error("Erro ao comunicar com o backend:", error);
+                const li = document.createElement('li');
+                li.textContent = "Erro ao processar comando.";
+                transcriptHistory.appendChild(li);
+                speak("Houve um erro ao processar o comando.");
             }
         }
 
-        // Iniciar escuta da wake-up word
+        function speak(text) {
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            msg.lang = "pt-PT";
+            window.speechSynthesis.speak(msg);
+        }
+
+        // Iniciar reconhecimento da palavra de ativação
         startWakeUpRecognition();
     </script>
 </body>
