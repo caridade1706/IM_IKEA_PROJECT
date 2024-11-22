@@ -74,8 +74,10 @@
 
         // Função para iniciar o reconhecimento da palavra de ativação
         function startWakeUpRecognition() {
-            wakeUpRecognition.start();
-            transcriptDiv.textContent = "Aguardando palavra de ativação...";
+            if (!isListeningForCommands) {
+                wakeUpRecognition.start();
+                transcriptDiv.textContent = "Aguardando palavra de ativação...";
+            }
         }
 
         // Quando detecta algo no wake-up recognition
@@ -125,14 +127,20 @@
 
                     // Enviar comando para o backend (IKEA)
                     await sendToBackend(currentTranscript);
+
+                    // Parar de escutar comandos e voltar para o wake-up
+                    isListeningForCommands = false;
+                    commandRecognition.stop();
+                    startWakeUpRecognition();
                 }
             }
         };
 
         commandRecognition.onerror = (event) => {
             console.error("Erro de reconhecimento de comandos:", event.error);
+            isListeningForCommands = false; // Resetar para o estado de ativação
             commandRecognition.stop();
-            startWakeUpRecognition(); // Volta a ouvir para a palavra de ativação
+            startWakeUpRecognition();
         };
 
         commandRecognition.onend = () => {

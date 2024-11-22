@@ -10,9 +10,13 @@ intents:
   - show_products
   - ask_help
   - nlu_fallback
+  - open_website
 
 entities:
   - category
+  - url
+  - scroll_up
+  - scroll_down
 
 slots:
   category:
@@ -21,6 +25,8 @@ slots:
     mappings:
       - type: from_entity
         entity: category
+
+
 
 responses:
   utter_greet:
@@ -49,6 +55,9 @@ responses:
 
 actions:
   - action_show_products
+  - action_open_website
+  - action_scroll_up
+  - action_scroll_down
   # - action_handle_unknown_category
 
 forms:

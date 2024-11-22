@@ -1,39 +1,38 @@
-# from rasa_sdk import Action
-# from rasa_sdk.executor import CollectingDispatcher
-# from rasa_sdk.interfaces import Tracker
-
-# class ActionShowProducts(Action):
-#     def name(self):
-#         return "action_show_products"
-
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: dict):
-#         category = tracker.get_slot("category")  # Supondo que "category" seja uma entidade
-#         if category == "cadeiras":
-#             dispatcher.utter_message(text="Aqui estão as cadeiras disponíveis...")
-#         elif category == "mesas":
-#             dispatcher.utter_message(text="Aqui estão as mesas disponíveis...")
-#         else:
-#             dispatcher.utter_message(text="Categoria não encontrada.")
-#         return []
-
 import http.client
 import json
 from rasa_sdk import Action
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.interfaces import Tracker
-
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+from typing import Any, Text, Dict, List
+import unicodedata
+import time
 
 class ActionShowProducts(Action):
     def name(self):
         return "action_show_products"
-
+    # Remover acentos da string
+    def remove_accents(self, input_str):
+        if input_str is not None:
+            # Transforma em formato Unicode Normalizado e remove caracteres acentuados
+            nfkd_form = unicodedata.normalize('NFKD', input_str)
+            return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
+        return None
+    
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: dict):
         # Obtém a categoria da entidade "category"
         category = tracker.get_slot("category")
+
+        #remove acentos qualquer tipo de acento
+        category2 = self.remove_accents(category)
+      
         if not category:
             dispatcher.utter_message(text="Não consegui entender a categoria que você quer buscar.")
             return []
@@ -52,7 +51,7 @@ class ActionShowProducts(Action):
             }
 
             # Endpoint da API com o termo de busca
-            endpoint = f"/keywordSearch?keyword={category}&countryCode=pt&languageCode=pt"
+            endpoint = f"/keywordSearch?keyword={category2}&countryCode=pt&languageCode=pt"
 
             # Faz a requisição à API
             conn.request("GET", endpoint, headers=headers)
@@ -82,9 +81,43 @@ class ActionShowProducts(Action):
         except Exception as e:
             # Tratamento de erros
             dispatcher.utter_message(
-                text="Desculpe, houve um problema ao buscar os produtos. Tente novamente mais tarde."
+                text="Desculpe, houve um problema ao procurar os produtos. Tente novamente mais tarde."
             )
             print(f"Erro na integração com a API do IKEA: {e}")
+
+                # ---- INTEGRAÇÃO COM SELENIUM ----
+        try:
+            print("Buscando no site da IKEA com Selenium...")
+
+            # Acessa o driver já inicializado
+            driver = ActionOpenWebsite.driver  # Certifique-se de que essa variável é global no código
+
+            driver.execute_script("window.scrollTo({ top: 0, behavior: 'smooth' });")
+
+            time.sleep(2)
+
+            # Localiza o campo de busca
+            wait = WebDriverWait(driver, 10)
+            search_box = wait.until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "input.search-field__input"))
+            )            
+            search_box.send_keys(Keys.CONTROL + "a")  # Seleciona todo o texto
+            search_box.send_keys(Keys.BACKSPACE)  # Apaga o texto selecionado
+            search_box.send_keys(category2)
+
+            # Aciona o botão de busca
+            search_button = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, "search-box__searchbutton"))  # Ajuste conforme o ID correto
+            )
+            search_button.click()
+
+            dispatcher.utter_message(text=f"Buscando por '{category}' no site da IKEA...")
+
+        except Exception as e:
+            dispatcher.utter_message(
+                text="Houve um problema ao realizar a busca no site. Tente novamente mais tarde."
+            )
+            print(f"Erro no Selenium: {e}")
 
         return []
 
@@ -103,4 +136,97 @@ class ActionHandleUnknownCategory(Action):
             dispatcher.utter_message(text="Não consegui entender a categoria que você quer buscar.")
             return []
 
+class ActionOpenWebsite(Action):
+    driver = None  # Classe armazenará o driver para reutilização
 
+    def name(self) -> Text:
+        return "action_open_website"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # URL fixa para o site da IKEA
+        website = "https://www.ikea.com/pt/pt/"
+
+        try:
+            # Verifica se o driver ainda está ativo ou precisa ser reiniciado
+            if not ActionOpenWebsite.driver or not self.is_driver_alive():
+                service = Service("C:\\Users\\Usuario\\Downloads\\chromedriver-win64\\chromedriver.exe")  # Atualize para o caminho correto
+                ActionOpenWebsite.driver = webdriver.Chrome(service=service)
+            
+            # Abre o site
+            ActionOpenWebsite.driver.get(website)
+            #FULL SCREEN
+            ActionOpenWebsite.driver.maximize_window()
+            # Aguarda o botão de aceitação de cookies aparecer
+            try:
+                wait = WebDriverWait(ActionOpenWebsite.driver, 10)
+                cookie_button = wait.until(
+                    EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler"))
+                )
+                cookie_button.click()
+            except Exception:
+                dispatcher.utter_message(text="Não foi possível encontrar o botão de aceitação de cookies.")
+            
+            dispatcher.utter_message(text=f"A abrir o site do IKEA Portugal")
+        except Exception as e:
+            dispatcher.utter_message(text=f"Erro ao abrir o site: {str(e)}")
+        
+        return []
+
+    def is_driver_alive(self) -> bool:
+        """
+        Verifica se o driver do navegador ainda está ativo.
+        """
+        try:
+            # Tenta acessar um atributo do driver para verificar se ele está vivo
+            ActionOpenWebsite.driver.title
+            return True
+        except:
+            # O driver não está mais ativo
+            self.close_driver()
+            return False
+
+    def close_driver(self):
+        """
+        Fecha o driver se ele estiver inicializado.
+        """
+        if ActionOpenWebsite.driver:
+            try:
+                ActionOpenWebsite.driver.quit()
+            except Exception:
+                pass  # Ignora exceções durante o fechamento
+            ActionOpenWebsite.driver = None
+
+
+class ActionScrollUp(Action):
+    def name(self):
+        return "action_scroll_up"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+        try:
+            global driver  # Certifique-se de que o driver está configurado globalmente
+            # Rola a página suavemente para o topo
+            driver.execute_script("window.scrollTo({top: 0, behavior: 'smooth'});")
+            dispatcher.utter_message(text="A página foi rolada para cima.")
+        except Exception as e:
+            dispatcher.utter_message(text="Houve um problema ao rolar a página para cima.")
+            print(f"Erro ao rolar para cima: {e}")
+        return []
+
+# Ação para "Descer" a página
+class ActionScrollDown(Action):
+    def name(self):
+        return "action_scroll_down"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+        try:
+            global driver  # Certifique-se de que o driver está configurado globalmente
+            # Rola a página suavemente para baixo
+            driver.execute_script("window.scrollBy({top: 500, behavior: 'smooth'});")
+            dispatcher.utter_message(text="A página foi rolada para baixo.")
+        except Exception as e:
+            dispatcher.utter_message(text="Houve um problema ao rolar a página para baixo.")
+            print(f"Erro ao rolar para baixo: {e}")
+        return []

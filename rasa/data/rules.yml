@@ -35,3 +35,18 @@ rules:
   steps:
     - intent: nlu_fallback
     - action: utter_default
+
+- rule: Abrir um website
+  steps:
+    - intent: open_website
+    - action: action_open_website
+
+- rule: Scroll para cima
+  steps:
+    - intent: scroll_up
+    - action: action_scroll_up
+
+- rule: Scroll para baixo
+  steps:
+    - intent: scroll_down
+    - action: action_scroll_down

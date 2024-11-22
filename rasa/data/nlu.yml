@@ -49,6 +49,42 @@ nlu:
       - Preciso de saber se há [cómodas](category) em stock.
       - Podes verificar as [mesas de cabeceira](category) disponíveis?
 
+  - intent: open_website
+    examples: |
+      - Vamos às compras
+      - Abre o IKEA
+      - Mostre-me o site
+      - Quero aceder a página
+      - Abre o catálogo da IKEA
+      - Mostre-me o catálogo
+      - Vamos às compras(https://www.ikea.com/pt/pt/)
+
+  - intent: scroll_up
+    examples: |
+      - Suba
+      - Quero subir
+      - Vá para cima
+      - Rola para cima
+      - Suba para cima
+      - Sobe a página
+      - Cima
+      - Sobe para cima
+      - Suba para cima
+      - Sobe
+
+  - intent: scroll_down
+    examples: |
+      - Desça
+      - Quero descer
+      - Vá para baixo
+      - Rola para baixo
+      - Desce a página
+      - Desce
+      - Desce para baixo
+      - Desça apra baixo
+
+
+
 
   
 lookup: category
