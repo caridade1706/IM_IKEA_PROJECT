@@ -84,12 +84,20 @@ nlu:
       - Desça apra baixo
 
 
+  - intent: select_product_by_position
+    examples: |
+      - Quero o produto número [1](position)
+      - Escolha o produto número [2](position)
+      - Mostre os detalhes do produto na posição [3](position)
+      - Eu quero o item número [4](position)
+      - Selecione o item [5](position), por favor
+      - Detalhes do produto [6](position)
+      - Produto número [7](position), por favor
 
-
-  
 lookup: category
 examples: |
   - cadeiras
+  - cortinas
   - mesas
   - sofás
   - poltronas

@@ -8,9 +8,9 @@ stories:
           - category: "cadeiras"  # Exemplo para uma categoria válida
       - action: action_show_products
 
-  # - story: Categoria não encontrada
-  #   steps:
-  #     - intent: show_products
-  #     - slot_was_set:
-  #         - category: null
-  #     - action: action_handle_unknown_category
+  - story: Select product by position
+    steps:
+      - intent: select_product_by_position
+      - slot_was_set:
+          - position: "1"
+      - action: action_select_product_by_position

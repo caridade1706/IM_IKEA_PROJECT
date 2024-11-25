@@ -152,7 +152,8 @@ class ActionOpenWebsite(Action):
         try:
             # Verifica se o driver ainda está ativo ou precisa ser reiniciado
             if not ActionOpenWebsite.driver or not self.is_driver_alive():
-                service = Service("C:\\Users\\Usuario\\Downloads\\chromedriver-win64\\chromedriver.exe")  # Atualize para o caminho correto
+                service = Service("C:\\Users\\rober\\Downloads\\chromedriver-win64\\chromedriver.exe")  # Atualize para o caminho correto
+                #service = Service("C:\\Users\\Usuario\\Downloads\\chromedriver-win64\\chromedriver.exe")  # Atualize para o caminho correto
                 ActionOpenWebsite.driver = webdriver.Chrome(service=service)
             
             # Abre o site
@@ -206,7 +207,7 @@ class ActionScrollUp(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         try:
-            global driver  # Certifique-se de que o driver está configurado globalmente
+            driver = ActionOpenWebsite.driver  # Certifique-se de que o driver está configurado globalmente
             # Rola a página suavemente para o topo
             driver.execute_script("window.scrollTo({top: 0, behavior: 'smooth'});")
             dispatcher.utter_message(text="A página foi rolada para cima.")
@@ -222,11 +223,69 @@ class ActionScrollDown(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         try:
-            global driver  # Certifique-se de que o driver está configurado globalmente
+            driver = ActionOpenWebsite.driver   # Certifique-se de que o driver está configurado globalmente
             # Rola a página suavemente para baixo
             driver.execute_script("window.scrollBy({top: 500, behavior: 'smooth'});")
             dispatcher.utter_message(text="A página foi rolada para baixo.")
         except Exception as e:
             dispatcher.utter_message(text="Houve um problema ao rolar a página para baixo.")
             print(f"Erro ao rolar para baixo: {e}")
+        return []
+    
+
+class ActionSelectProductByPosition(Action):
+    def name(self):
+        return "action_select_product_by_position"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # Obtém a posição do produto a partir do slot
+        position = tracker.get_slot("position")
+
+        # Verifica se a posição foi fornecida e é válida
+        if not position:
+            dispatcher.utter_message(text="Desculpe, não entendi a posição do produto que você quer.")
+            return []
+
+        try:
+            # Converte a posição para inteiro
+            position = int(position) - 1  # Subtrai 1 para ajustar ao índice da lista (começa em 0)
+
+            driver = ActionOpenWebsite.driver
+            if not driver:
+                dispatcher.utter_message(text="O navegador não está ativo. Abra o site primeiro.")
+                return []
+
+            # Aguarda a lista de produtos carregar
+            wait = WebDriverWait(driver, 10)
+            product_elements = wait.until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".product-compact__spacer"))  # Atualize o seletor para o site da IKEA
+            )
+
+            # Verifica se a posição está dentro do intervalo
+            if position < 0 or position >= len(product_elements):
+                dispatcher.utter_message(
+                    text=f"A posição fornecida ({position + 1}) está fora do intervalo de produtos disponíveis."
+                )
+                return []
+
+            # Clica no produto desejado
+            selected_product = product_elements[position]
+            selected_product.click()
+
+            dispatcher.utter_message(
+                text=f"O produto na posição {position + 1} foi selecionado."
+            )
+        except ValueError:
+            dispatcher.utter_message(
+                text="Por favor, informe um número válido para a posição."
+            )
+        except Exception as e:
+            dispatcher.utter_message(
+                text="Houve um problema ao selecionar o produto. Tente novamente mais tarde."
+            )
+            print(f"Erro ao selecionar produto: {e}")
+
         return []

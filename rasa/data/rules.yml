@@ -50,3 +50,8 @@ rules:
   steps:
     - intent: scroll_down
     - action: action_scroll_down
+
+- rule: Select product by position
+  steps:
+    - intent: select_product_by_position
+    - action: action_select_product_by_position
