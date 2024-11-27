@@ -346,6 +346,14 @@ class ActionAddToCart(Action):
 
             print("A clicar no botão de adicionar ao carrinho...")
             driver.execute_script("arguments[0].click();", add_to_cart_button)
+            
+            wait = WebDriverWait(driver, 15)
+            close_button = wait.until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.rec-modal-header__close"))
+            )
+
+            print("A clicar no botão de fechar...")
+            driver.execute_script("arguments[0].click();", close_button)
             dispatcher.utter_message(text="O produto foi adicionado ao carrinho.")
         except Exception as e:
             print("ERROOOOOOO")
@@ -362,10 +370,26 @@ class ActionAddToFavorites(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        position = next(tracker.get_latest_entity_values("position"), None)
-        if position:
-            # Lógica de adicionar o item aos favoritos
-            dispatcher.utter_message(text=f"O produto na posição {position} foi adicionado aos favoritos.")
-        else:
-            dispatcher.utter_message(text="Não foi possível identificar o produto a ser adicionado aos favoritos.")
+        
+        driver = ActionOpenWebsite.driver
+
+        if not driver:
+            dispatcher.utter_message(text="O navegador não está ativo. Abra o site primeiro.")
+            return []
+
+        try:
+            # Locate the "Add to Favorites" button
+            print("A tentar adicionar aos favoritos...")
+            wait = WebDriverWait(driver, 15)
+            add_to_favorites_button = wait.until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.pip-btn.pip-btn--small.pip-btn--icon-primary-inverse.pip-favourite-button"))
+            )
+
+            print("A clicar no botão de adicionar aos favoritos...")
+            driver.execute_script("arguments[0].click();", add_to_favorites_button)
+            dispatcher.utter_message(text="O produto foi adicionado aos favoritos.")
+        except Exception as e:
+            dispatcher.utter_message(text="Não foi possível adicionar o produto aos favoritos.")
+            print(f"Erro ao adicionar aos favoritos: {e}")
+
         return []
