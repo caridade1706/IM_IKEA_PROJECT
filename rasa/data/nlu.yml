@@ -94,6 +94,57 @@ nlu:
       - Detalhes do produto [6](position)
       - Produto número [7](position), por favor
 
+  - intent: add_to_cart
+    examples: |
+      - Adiciona o produto ao carrinho.
+      - Adiciona-o ao carrinho.
+      - Podes adicioná-lo ao carrinho.
+      - Coloca o primeiro produto no carrinho.
+      - Adiciona-me este produto ao carrinho.
+      - Gostaria de adicionar este item ao carrinho.
+      - Adicione ao carrinho, por favor.
+      - Quero este produto no carrinho.
+      - Por favor, coloca isso no carrinho.
+      - Adicione ao carrinho o produto número [1](position).
+
+
+  - intent: add_to_favorites
+    examples: |
+      - Adiciona o produto aos favoritos.
+      - Adiciona-o aos favoritos.
+      - Podes adicioná-lo à lista de favoritos.
+      - Coloca o primeiro produto nos favoritos.
+      - Adiciona-me este produto aos favoritos.
+      - Gostaria de adicionar este item aos favoritos.
+      - Adicione aos favoritos, por favor.
+      - Quero este produto na lista de favoritos.
+      - Por favor, coloca isso nos favoritos.
+      - Adicione aos favoritos o produto número [1](position).
+
+  - intent: show_cart
+    examples: |
+      - Mostrar-me o carrinho.
+      - Quero ver o que tenho no meu carrinho.
+      - Abre o carrinho.
+      - Mostra o carrinho, por favor.
+      - Gostaria de verificar o carrinho.
+      - Pode abrir o meu carrinho?
+      - Quero ver os itens no meu carrinho.
+      - Por favor, exiba o carrinho.
+      - Mostre o carrinho de compras.
+
+  - intent: show_favorites
+    examples: |
+      - Mostrar-me os favoritos.
+      - Quero ver o que tenho nos favoritos.
+      - Abre os favoritos.
+      - Mostra os favoritos, por favor.
+      - Gostaria de verificar os favoritos.
+      - Pode abrir a lista de favoritos?
+      - Quero ver os itens nos meus favoritos.
+      - Por favor, exiba os favoritos.
+      - Mostre a minha lista de favoritos.
+
 lookup: category
 examples: |
   - cadeiras

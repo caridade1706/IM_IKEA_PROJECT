@@ -7,18 +7,20 @@ session_config:
 intents:
   - greet
   - goodbye
-  - show_products
   - ask_help
   - nlu_fallback
+  - show_products
   - open_website
+  - scroll_up
   - scroll_down
   - select_product_by_position
+  - show_cart
+  - show_favorites
+  - add_to_cart
+  - add_to_favorites
 
 entities:
   - category
-  - url
-  - scroll_up
-  - scroll_down
   - position
 
 slots:
@@ -39,29 +41,35 @@ slots:
     influence_conversation: false
     mappings:
       - type: custom
-
+  cart_items:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: custom
+  favorite_items:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: custom
 
 responses:
   utter_greet:
     - text: "Olá! Como posso ajudá-lo hoje?"
-    - text: "Bem-vindo! Diga-me como posso ajudar."
-    - text: "Oi! Precisa de ajuda com alguma coisa?"
+    - text: "Bem-vindo! Como posso ajudar?"
+    - text: "Oi! Precisa de alguma coisa?"
 
   utter_goodbye:
     - text: "Até logo! Volte sempre."
     - text: "Adeus! Espero vê-lo em breve."
-    - text: "Tchau! Se precisar de ajuda, estarei por aqui."
+    - text: "Tchau! Até a próxima!"
 
   utter_ask_help:
-    - text: "Claro! O que você precisa?"
+    - text: "Claro! Em que posso ajudar?"
     - text: "Estou aqui para ajudar! Diga-me o que precisa."
     - text: "Sim, com certeza. Como posso ajudar?"
 
-  utter_iamabot:
-    - text: "Eu sou um assistente virtual, como posso ajudar?"
-
   utter_default:
-    - text: "Desculpe, não percebi. Pode repetir de outra forma?"
+    - text: "Desculpe, não entendi. Pode tentar de outra forma?"
 
   utter_default_products:
     - text: "Ainda não encontrei produtos para essa categoria. Quer tentar outra?"
@@ -75,7 +83,7 @@ responses:
         4. Poltrona Clássica
         5. Banco Alto Preto
         Por favor, escolha um número para ver mais detalhes.
-    
+
   utter_product_details_by_position:
     - text: "Mostrando detalhes do produto na posição {position}: {product_details}"
     - text: "Aqui estão as informações sobre o item {position}: {product_details}"
@@ -83,13 +91,34 @@ responses:
   utter_invalid_position:
     - text: "Desculpe, não há um produto na posição {position}."
 
+  utter_no_cart_items:
+    - text: "O seu carrinho está vazio."
+
+  utter_no_favorites_items:
+    - text: "A sua lista de favoritos está vazia."
+
+  utter_item_added_to_cart:
+    - text: "O produto foi adicionado ao carrinho."
+
+  utter_item_added_to_favorites:
+    - text: "O produto foi adicionado aos favoritos."
+
+  utter_add_to_cart_failed:
+    - text: "Não foi possível adicionar o produto ao carrinho. Tente novamente."
+
+  utter_add_to_favorites_failed:
+    - text: "Não foi possível adicionar o produto aos favoritos. Tente novamente."
+
 actions:
   - action_show_products
   - action_open_website
   - action_scroll_up
   - action_scroll_down
   - action_select_product_by_position
-  # - action_handle_unknown_category
+  - action_show_cart
+  - action_show_favorites
+  - action_add_to_cart
+  - action_add_to_favorites
 
 forms:
   product_form:

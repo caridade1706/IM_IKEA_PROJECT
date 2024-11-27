@@ -13,6 +13,8 @@ from typing import Any, Text, Dict, List
 import unicodedata
 import time
 
+products_retrived = []
+
 class ActionShowProducts(Action):
     def name(self):
         return "action_show_products"
@@ -62,6 +64,11 @@ class ActionShowProducts(Action):
             res = conn.getresponse()
             data = res.read()
             products = json.loads(data.decode("utf-8"))  # Decodifica a resposta JSON
+
+            products_retrived.clear()
+            
+            for product in products:
+                products_retrived.append(product)
 
             # Verifica se há produtos na resposta
             if not products:
@@ -252,28 +259,15 @@ class ActionSelectProductByPosition(Action):
         try:
             # Converte a posição para inteiro
             position = int(position) - 1  # Subtrai 1 para ajustar ao índice da lista (começa em 0)
-
+            print(f"Selecionando produto na posição {position + 1}...")
             driver = ActionOpenWebsite.driver
             if not driver:
                 dispatcher.utter_message(text="O navegador não está ativo. Abra o site primeiro.")
                 return []
 
-            # Aguarda a lista de produtos carregar
-            wait = WebDriverWait(driver, 10)
-            product_elements = wait.until(
-                EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".product-compact__spacer"))  # Atualize o seletor para o site da IKEA
-            )
+            product_retrived = products_retrived[position]
 
-            # Verifica se a posição está dentro do intervalo
-            if position < 0 or position >= len(product_elements):
-                dispatcher.utter_message(
-                    text=f"A posição fornecida ({position + 1}) está fora do intervalo de produtos disponíveis."
-                )
-                return []
-
-            # Clica no produto desejado
-            selected_product = product_elements[position]
-            selected_product.click()
+            driver.get(product_retrived['url'])
 
             dispatcher.utter_message(
                 text=f"O produto na posição {position + 1} foi selecionado."
@@ -288,4 +282,90 @@ class ActionSelectProductByPosition(Action):
             )
             print(f"Erro ao selecionar produto: {e}")
 
+        return []
+        
+
+class ActionShowCart(Action):
+    def name(self) -> Text:
+        return "action_show_cart"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        try:
+            driver = ActionOpenWebsite.driver
+            driver.get("https://www.ikea.com/pt/pt/shoppingcart/")
+            dispatcher.utter_message(text="O carrinho foi aberto.")
+        except Exception as e:
+            dispatcher.utter_message(text="Não foi possível abrir o carrinho.")
+            print(f"Erro ao abrir o carrinho: {e}")
+
+        return	[]
+
+class ActionShowFavorites(Action):
+    def name(self) -> Text:
+        return "action_show_favorites"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        try:
+            driver = ActionOpenWebsite.driver
+            driver.get("https://www.ikea.com/pt/pt/favourites/")
+            dispatcher.utter_message(text="Os favoritos foram abertos.")
+        except Exception as e:
+            dispatcher.utter_message(text="Não foi possível abrir os favoritos.")
+            print(f"Erro ao abrir os favoritos: {e}")
+
+        return []
+
+
+class ActionAddToCart(Action):
+    def name(self) -> Text:
+        return "action_add_to_cart"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        driver = ActionOpenWebsite.driver
+
+        if not driver:
+            dispatcher.utter_message(text="O navegador não está ativo. Abra o site primeiro.")
+            return []
+        
+        try:
+            # Localiza o botão de adicionar ao carrinho
+            print("A tentar adicionar ao carrinho...")
+            wait = WebDriverWait(driver, 15)
+            add_to_cart_button = wait.until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "button.pip-btn.pip-btn--emphasised.pip-btn--fluid"))
+            )
+
+            print("A clicar no botão de adicionar ao carrinho...")
+            driver.execute_script("arguments[0].click();", add_to_cart_button)
+            dispatcher.utter_message(text="O produto foi adicionado ao carrinho.")
+        except Exception as e:
+            print("ERROOOOOOO")
+            dispatcher.utter_message(text="Não foi possível adicionar o produto ao carrinho.")
+            print(f"Erro ao adicionar ao carrinho: {e}")
+
+
+        return []
+
+class ActionAddToFavorites(Action):
+    def name(self) -> Text:
+        return "action_add_to_favorites"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        position = next(tracker.get_latest_entity_values("position"), None)
+        if position:
+            # Lógica de adicionar o item aos favoritos
+            dispatcher.utter_message(text=f"O produto na posição {position} foi adicionado aos favoritos.")
+        else:
+            dispatcher.utter_message(text="Não foi possível identificar o produto a ser adicionado aos favoritos.")
         return []

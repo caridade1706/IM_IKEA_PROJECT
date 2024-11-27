@@ -55,3 +55,23 @@ rules:
   steps:
     - intent: select_product_by_position
     - action: action_select_product_by_position
+
+- rule: Mostrar o carrinho
+  steps:
+    - intent: show_cart
+    - action: action_show_cart  # Nome da ação personalizada que exibe o carrinho.
+
+- rule: Mostrar os favoritos
+  steps:
+    - intent: show_favorites
+    - action: action_show_favorites  # Nome da ação personalizada que exibe os favoritos.
+
+- rule: Adicionar item ao carrinho
+  steps:
+    - intent: add_to_cart
+    - action: action_add_to_cart  # Ação personalizada que adiciona o item ao carrinho.
+
+- rule: Adicionar item aos favoritos
+  steps:
+    - intent: add_to_favorites
+    - action: action_add_to_favorites  # Ação personalizada que adiciona o item aos favoritos.
