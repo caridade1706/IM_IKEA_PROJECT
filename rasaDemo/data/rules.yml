@@ -1,0 +1,77 @@
+version: "3.1"
+
+rules:
+
+- rule: Dizer adeus sempre que o usuário disser goodbye
+  steps:
+    - intent: goodbye
+    - action: utter_goodbye
+
+- rule: Responder a uma saudação
+  steps:
+    - intent: greet
+    - action: utter_greet
+
+- rule: Mostrar produtos válidos
+  steps:
+    - intent: show_products
+    - slot_was_set:
+        - category: "cadeiras"  # Exemplo de uma categoria válida
+    - action: action_show_products
+
+# - rule: Categoria não encontrada
+#   steps:
+#     - intent: show_products
+#     - slot_was_set:
+#         - category: null  # Categoria não reconhecida
+#     - action: action_handle_unknown_category
+
+- rule: Oferecer ajuda
+  steps:
+    - intent: ask_help
+    - action: utter_ask_help
+
+- rule: Fallback padrão
+  steps:
+    - intent: nlu_fallback
+    - action: utter_default
+
+- rule: Abrir um website
+  steps:
+    - intent: open_website
+    - action: action_open_website
+
+- rule: Scroll para cima
+  steps:
+    - intent: scroll_up
+    - action: action_scroll_up
+
+- rule: Scroll para baixo
+  steps:
+    - intent: scroll_down
+    - action: action_scroll_down
+
+- rule: Select product by position
+  steps:
+    - intent: select_product_by_position
+    - action: action_select_product_by_position
+
+- rule: Mostrar o carrinho
+  steps:
+    - intent: show_cart
+    - action: action_show_cart  # Nome da ação personalizada que exibe o carrinho.
+
+- rule: Mostrar os favoritos
+  steps:
+    - intent: show_favorites
+    - action: action_show_favorites  # Nome da ação personalizada que exibe os favoritos.
+
+- rule: Adicionar item ao carrinho
+  steps:
+    - intent: add_to_cart
+    - action: action_add_to_cart  # Ação personalizada que adiciona o item ao carrinho.
+
+- rule: Adicionar item aos favoritos
+  steps:
+    - intent: add_to_favorites
+    - action: action_add_to_favorites  # Ação personalizada que adiciona o item aos favoritos.

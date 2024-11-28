@@ -1,0 +1,40 @@
+version: "3.1"
+
+stories:
+  - story: Mostrar produtos por categoria
+    steps:
+      - intent: show_products
+      - slot_was_set:
+          - category: "cadeiras"  # Exemplo para uma categoria válida
+      - action: action_show_products
+
+  - story: Select product by position
+    steps:
+      - intent: select_product_by_position
+      - slot_was_set:
+          - position: "1"
+      - action: action_select_product_by_position
+
+  - story: Consultar carrinho
+    steps:
+      - intent: show_products
+      - action: action_show_cart
+
+  - story: Consultar favoritos
+    steps:
+      - intent: show_favorites
+      - action: action_show_favorites
+
+  - story: Adicionar ao carrinho
+    steps:
+      - intent: add_to_cart
+        entities:
+          - position: "1"
+      - action: action_add_to_cart
+
+  - story: Adicionar aos favoritos
+    steps:
+      - intent: add_to_favorites
+        entities:
+          - position: "2"
+      - action: action_add_to_favorites

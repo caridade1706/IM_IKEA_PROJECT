@@ -343,7 +343,7 @@ InitializeKWS();
     })
     //myvad.start()
   }
-  main()
+  // main()
 
   if ('speechSynthesis' in window) {
 	  console.log('Your browser <strong>supports</strong> speech synthesis.');
@@ -395,19 +395,15 @@ InitializeKWS();
     $.post( "http://localhost:5005/model/parse", JSON.stringify(obj), function( data ) {
     console.log(data);
   
-      var message = {'intent':'change_color','shape':shape,'color':color}
-      var messaget = btoa(unescape(encodeURIComponent(final_transcript)));
-      var result = { "recognized" : ["SPEECH", "SPEECHIN", "APP"], "text": messaget, "nlu": message };
-      mmiCli_1.sendToIM(new LifeCycleEvent("SPEECHIN", "IM", "text-1", "ctx-1").
+     var messaget = btoa(unescape(encodeURIComponent(final_transcript)));
+        var result = { "recognized": ["SPEECH", "SPEECHIN", "APP"], "text": messaget, "nlu": JSON.stringify(data) };
+        mmiCli_1.sendToIM(new LifeCycleEvent("SPEECHIN", "IM", "text-1", "ctx-1").
             doExtensionNotification(new EMMA("text-", "text", "command", 1, 0).
-            setValue(JSON.stringify(result))));
-    
-  });
+                setValue(JSON.stringify(result))));
 
-  /*
-    
-            */
-  }
+    });
+    }
+
  // sendMMI("mudar para azul o circulo");
   
 
