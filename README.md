@@ -1,9 +1,47 @@
-Para ligar 
+# RASA 
 
-abrir powershell no Fusion, mmi e rodar jar
-abrir dois prompts miniconda rasa run actions e rasa run -m models --enable-api --cors "*"
+```bash
+$ conda activate rasa-env
 
-Iniciar frontend: .\start_web_app.bat   
+$ cd ...IM_IKEA_PROJECT\rasaDemo
+
+$ rasa train
 
 
-API: https://rapidapi.com/Octapi/api/ikea-api/playground/apiendpoint_d7115e38-25ae-4da8-b2b4-267ab756867e
+$ rasa run --enable-api -m .\models\ --cors "*" 
+```
+
+# FusionEngine
+
+```bash
+$ cd ...IM_IKEA_PROJECT\FusionEngine
+
+$ ./start.bat
+```
+
+# MmiFramework
+
+```bash
+$ cd ...IM_IKEA_PROJECT\mmiframeworkV2
+
+$ ./start.bat
+```
+
+# WebApp
+
+```bash
+$ cd ...IM_IKEA_PROJECT\WebAppAssistantV2
+
+$ ./start_web_app.bat
+
+```
+
+# Backend
+
+```bash
+$ cd ...IM_IKEA_PROJECT\app
+
+$ python main.py
+```
+## IKEA API
+https://rapidapi.com/Octapi/api/ikea-api/
