@@ -75,3 +75,40 @@ rules:
   steps:
     - intent: add_to_favorites
     - action: action_add_to_favorites  # Ação personalizada que adiciona o item aos favoritos.
+
+- rule: Eliminar item dos favoritos
+  steps:
+    - intent: remove_favorites
+    - action: action_remove_favorites
+
+- rule: Eliminar item do carrinho
+  steps:
+    - intent: remove_cart
+    - action: action_remove_cart
+
+- rule: Voltar atrás
+  steps:
+    - intent: go_back
+    - action: action_go_back
+
+- rule: Ver mais opções
+  steps: 
+    - intent: show_more
+    - action: action_show_more
+
+- rule: Finalizar a compra
+  steps:
+    - intent: finalize_order
+    - action: action_finalize_order
+
+- rule: Página Inicial
+  steps:
+    - intent: main_page
+    - action: action_main_page
+
+- rule: Ordenar produtos
+  steps:
+    - intent: order_products
+    - slot_was_set:
+        - criterio: "Mais Populares"  # Exemplo de uma categoria válida
+    - action: action_order_products

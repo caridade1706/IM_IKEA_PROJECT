@@ -145,21 +145,115 @@ nlu:
       - Por favor, exiba os favoritos.
       - Mostre a minha lista de favoritos.
 
-lookup: category
-examples: |
-  - cadeiras
-  - cortinas
-  - mesas
-  - sofás
-  - poltronas
-  - secretárias
-  - bancos altos
-  - aparadores
-  - móveis de entrada
-  - móveis de TV
-  - mesas de centro
-  - camas
-  - roupeiros
-  - estantes
-  - prateleiras
-  - armários
+  - intent: remove_favorites
+    examples: |
+      - Quero remover dos favotiros o produto número [1](position)
+      - Remove o produto número [2](position) dos favoritos
+      - Elimina o produto na posição [3](position) dos favoritos
+      - Eu quero eliminar o item número [4](position) dos favoritos
+      - Selecione o item [5](position) e elimina dos favoritos
+      - Produto número [7](position) fora dos favoritos
+      - Remove o item [8](position) dos favoritos
+  
+  - intent: remove_cart
+    examples: |
+      - Quero remover do carrinho o produto número [1](position)
+      - Remove o produto número [2](position) do carrinho
+      - Elimina o produto na posição [3](position) do carrinho
+      - Eu quero eliminar o item número [4](position) do carrinho
+      - Selecione o item [5](position) e elimina do carrinho
+      - Produto número [7](position) fora do carrinho
+      - Remove o item [8](position) do carrinho
+  
+  - intent: go_back
+    examples: |
+      - Quero voltar a trás
+      - Anda para trás
+      - Volta para a última página
+      - Volta atrás
+      - Mostra-me a página anterior
+      - Volta para trás
+      - Preciso de ver o que estava antes
+      - Preciso de voltar atrás
+      - Anda para trás
+
+  - intent: show_more
+    examples: |
+      - Quero ver mais opções
+      - Mostra mais opções
+      - Ver mais opções
+
+  - intent: finalize_order
+    examples: |
+      - Finaliza a compra.
+      - Procede para o checkout.
+      - Já vi tudo o que tinha de ver.
+      - Por hoje, já escolhi tudo
+  
+  - intent: main_page
+    examples: |
+      - Volta à página inicial
+      - Regressa ao início
+      - Quero voltar ao início
+      - Por favor, mostra-me a página inicial
+      - Página Inicial
+
+  - intent: order_products
+    examples: |
+      - Ordena Por [A melhor correspondência](criterio), por favor.
+      - Quero ver os produtos organizados pela [melhor correspondência](criterio).
+      - Podes organizar pelos produtos com [A melhor correspondência](criterio)?
+      - Mostra os produtos do [mais baixo ao mais elevado](criterio).
+      - Ordena por [do mais baixo ao mais elevado](criterio).
+      - Quero ver em ordem [do mais baixo ao mais elevado](criterio), por favor.
+      - Podes organizar os produtos [do mais elevado ao mais baixo](criterio)?
+      - Ordena do [mais elevado ao mais baixo](criterio), por favor.
+      - Gostava de ver os produtos ordenados do [mais elevado ao mais baixo](criterio).
+      - Mostra os produtos classificados Por [Mais Recente](criterio).
+      - Ordena pelos produtos [Mais Recente](criterio), por favor.
+      - Quero ver os produtos mais novos, ordena por [Mais Recente](criterio).
+      - Podes ordenar pelos [Mais Populares](criterio)?
+      - Mostra os produtos classificados como [Mais Populares](criterio).
+      - Quero ver os produtos mais procurados, ordena pelos [Mais Populares](criterio).
+      - Ordena os produtos Por [Largura](criterio), por favor.
+      - Quero ver os produtos ordenados pela [Largura](criterio).
+      - Podes organizar os produtos pela [Largura](criterio)?
+      - Classifica os produtos pela [Altura](criterio).
+      - Preciso ver os produtos organizados por [Altura](criterio), por favor.
+      - Ordena os produtos do mais baixo para o mais alto em [Altura](criterio).
+      - Quero os produtos ordenados Por [Comprimento](criterio).
+      - Ordena os produtos pelo [Comprimento](criterio), por favor.
+      - Mostra os produtos em ordem crescente de [Comprimento](criterio).
+
+  - lookup: category
+    examples: |
+      - cadeiras
+      - cortinas
+      - mesas
+      - sofás
+      - poltronas
+      - secretárias
+      - bancos altos
+      - aparadores
+      - móveis de entrada
+      - móveis de TV
+      - mesas de centro
+      - camas
+      - roupeiros
+      - estantes
+      - prateleiras
+      - armários
+      - tapetes
+
+  - lookup: criterio
+    examples: |
+      - A melhor correspondência
+      - do mais baixo ao mais elevado
+      - do mais elevado ao mais baixo
+      - mais recente
+      - mais populares
+      - nome 
+      - largura 
+      - altura
+      - comprimento
+      - classificação de clientes

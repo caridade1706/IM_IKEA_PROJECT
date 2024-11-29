@@ -1,7 +1,7 @@
 Para ligar 
 
 abrir powershell no Fusion, mmi e rodar jar
-abrir dois prompts miniconda rasa run actions e rasa run -m models --enable-api --cors "*" --endpoints endpoints.yml
+abrir dois prompts miniconda rasa run actions e rasa run -m models --enable-api --cors "*"
 
 Iniciar frontend: .\start_web_app.bat   
 

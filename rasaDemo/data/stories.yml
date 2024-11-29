@@ -38,3 +38,44 @@ stories:
         entities:
           - position: "2"
       - action: action_add_to_favorites
+
+  - story: Eliminar item dos favoritos
+    steps:
+      - intent: remove_favorites
+        entities:
+          - position: "3"
+      - action: action_remove_favorites
+
+  - story: Eliminar item do carrinho
+    steps:
+      - intent: remove_cart
+        entities:
+          - position: "4"
+      - action: action_remove_cart
+  
+  - story: Voltar atrás
+    steps:
+      - intent: go_back
+      - action: action_go_back
+  
+  - story: Ver mais opções
+    steps:
+      - intent: show_more
+      - action: action_show_more
+
+  - story: Finalizar a compra
+    steps:
+      - intent: finalize_order
+      - action: action_finalize_order
+
+  - story: Página Inicial
+    steps:
+      - intent: main_page
+      - action: action_main_page
+
+  - story: Ordenar produtos
+    steps:
+      - intent: order_products
+      - slot_was_set:
+          - criterio: "Mais Populares"  # Exemplo para uma categoria válida
+      - action: action_order_products

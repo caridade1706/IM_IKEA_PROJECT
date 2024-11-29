@@ -18,10 +18,18 @@ intents:
   - show_favorites
   - add_to_cart
   - add_to_favorites
+  - remove_favorites
+  - remove_cart
+  - go_back
+  - show_more
+  - finalize_order
+  - main_page
+  - order_products
 
 entities:
   - category
   - position
+  - criterio
 
 slots:
   category:
@@ -51,6 +59,13 @@ slots:
     influence_conversation: false
     mappings:
       - type: custom
+  criterio:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: criterio
+
 
 responses:
   utter_greet:
@@ -119,6 +134,13 @@ actions:
   - action_show_favorites
   - action_add_to_cart
   - action_add_to_favorites
+  - action_remove_favorites
+  - action_remove_cart
+  - action_go_back
+  - action_show_more
+  - action_finalize_order
+  - action_main_page
+  - action_order_products
 
 forms:
   product_form:

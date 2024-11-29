@@ -404,6 +404,12 @@ InitializeKWS();
     });
     }
 
+    // Click mic to start voice recognition !!
+    $(".mic").on('click', function () {
+            recognition.start();
+            console.log("Start voice recognition");
+        })
+
  // sendMMI("mudar para azul o circulo");
   
 

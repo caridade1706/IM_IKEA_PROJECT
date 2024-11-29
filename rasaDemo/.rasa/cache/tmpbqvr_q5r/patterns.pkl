@@ -1,0 +1,10 @@
+[
+  {
+    "name": "category",
+    "pattern": "(\\bcadeiras\\b|\\bcortinas\\b|\\bmesas\\b|\\bsofás\\b|\\bpoltronas\\b|\\bsecretárias\\b|\\bbancos\\ altos\\b|\\baparadores\\b|\\bmóveis\\ de\\ entrada\\b|\\bmóveis\\ de\\ TV\\b|\\bmesas\\ de\\ centro\\b|\\bcamas\\b|\\broupeiros\\b|\\bestantes\\b|\\bprateleiras\\b|\\barmários\\b|\\btapetes\\b)"
+  },
+  {
+    "name": "criterio",
+    "pattern": "(\\bA\\ melhor\\ correspondência\\b|\\bdo\\ mais\\ baixo\\ ao\\ mais\\ elevado\\b|\\bdo\\ mais\\ elevado\\ ao\\ mais\\ baixo\\b|\\bMais\\ Recente\\b|\\bMais\\ Populares\\b|\\bLargura\\b|\\bAltura\\b|\\bComprimento\\b)"
+  }
+]
