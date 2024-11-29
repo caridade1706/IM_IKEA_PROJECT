@@ -238,7 +238,7 @@ def select_product_by_positions(position, tts):
         print(product_retrived)
         driver.get(product_retrived['url'])
         tts(
-            f"Selecionei o produto na posição {position + 1}, {products_retrived['name']}, preço {products_retrived['price']['currentPrice']} euros!."
+            f"Selecionei o produto na posição {position + 1}, {products_retrived['name']}!."
         )
     except ValueError:
         tts("Por favor, informe um número válido para a posição.")
